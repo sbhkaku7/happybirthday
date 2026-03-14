@@ -45,6 +45,33 @@ function loadScript(src) {
   });
 }
 
+
+function startMusicFromGesture(audio) {
+  if (!audio) return;
+
+  const tryPlay = () => {
+    const playPromise = audio.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      return playPromise.catch(() => {
+        // iOS can still reject the first attempt; re-try on the next tap/click.
+        const resume = () => audio.play().catch(() => {});
+        document.addEventListener("touchend", resume, { once: true });
+        document.addEventListener("click", resume, { once: true });
+      });
+    }
+    return Promise.resolve();
+  };
+
+  // Some iOS versions are more reliable when load happens in the same gesture.
+  if (audio.readyState < 2) {
+    audio.load();
+  }
+
+  audio.muted = false;
+  audio.volume = 1;
+  return tryPlay();
+}
+
 // ── Main ─────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
   applyTheme(currentMode);
@@ -53,7 +80,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Set music source
   const audio = document.querySelector(".song");
   if (audio && CONFIG.music) {
-    audio.querySelector("source").src = CONFIG.music;
+    const source = audio.querySelector("source");
+    if (source) {
+      source.src = CONFIG.music;
+      source.type = "audio/mpeg";
+    }
+    audio.src = CONFIG.music;
+    audio.preload = "auto";
     audio.load();
   }
 
@@ -92,35 +125,14 @@ Swal.fire({
   showCancelButton: true,
   confirmButtonColor: CONFIG.colors.accent || "#3085d6",
   cancelButtonColor: "#888",
-  confirmButtonText: "Yes!",
-  cancelButtonText: "Definitely Yes",
+  confirmButtonText: "Play with music",
+  cancelButtonText: "Continue silently",
   background: isDark ? "#1e293b" : "#ffffff",
   color: isDark ? "#f1f5f9" : "#1e293b",
-  allowOutsideClick:false
-}).then((result) => {
-
-  if (result.isConfirmed && audio) {
-
-    // Force user interaction playback for iOS
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log("Music started");
-        })
-        .catch(() => {
-          // fallback for strict iOS autoplay policies
-          document.addEventListener("touchstart", () => {
-            audio.play();
-          }, { once:true });
-        });
-    }
-
-  }
-
+  allowOutsideClick: false,
+  preConfirm: () => startMusicFromGesture(audio)
+}).then(() => {
   buildTimeline(rendered);
-
 });
   });
 // ── Timeline Builder ─────────────────────────────────────────────

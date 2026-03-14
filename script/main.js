@@ -93,7 +93,7 @@ Swal.fire({
   confirmButtonColor: CONFIG.colors.accent || "#3085d6",
   cancelButtonColor: "#888",
   confirmButtonText: "Yes!",
-  cancelButtonText: "No",
+  cancelButtonText: "Definitely Yes",
   background: isDark ? "#1e293b" : "#ffffff",
   color: isDark ? "#f1f5f9" : "#1e293b",
   allowOutsideClick:false

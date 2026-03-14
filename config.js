@@ -27,7 +27,7 @@
 
 const CONFIG = {
   // ── Recipient Info ────────────────────────────────────────────
-  name: userName || "",
+  name: userName || " ",
   photo: "https://cdn.shopify.com/s/files/1/0696/9101/5342/files/irene.jpg?v=1773476251",       // Place your photo in the img/ folder
   music: "https://cdn.jsdelivr.net/gh/sbhkaku7/happybirthday@main/music/hbd.mpeg",      // Place your music in the music/ folder
 

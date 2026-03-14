@@ -93,34 +93,25 @@ Swal.fire({
   confirmButtonColor: CONFIG.colors.accent || "#3085d6",
   cancelButtonColor: "#888",
   confirmButtonText: "Yes!",
-  cancelButtonText: "Definitely Yes",
+  cancelButtonText: "Not now",
   background: isDark ? "#1e293b" : "#ffffff",
   color: isDark ? "#f1f5f9" : "#1e293b",
-  allowOutsideClick:false
-}).then((result) => {
+  allowOutsideClick:false,
+  preConfirm: () => {
+    if (!audio) return;
 
-  if (result.isConfirmed && audio) {
-
-    // Force user interaction playback for iOS
+    // Call play directly inside the trusted click handler for iOS Safari.
     const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log("Music started");
-        })
-        .catch(() => {
-          // fallback for strict iOS autoplay policies
-          document.addEventListener("touchstart", () => {
-            audio.play();
-          }, { once:true });
-        });
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        const resume = () => audio.play().catch(() => {});
+        document.addEventListener("touchstart", resume, { once: true });
+        document.addEventListener("click", resume, { once: true });
+      });
     }
-
   }
-
+}).then(() => {
   buildTimeline(rendered);
-
 });
   });
 // ── Timeline Builder ─────────────────────────────────────────────

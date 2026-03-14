@@ -13,7 +13,7 @@
       const count = section.count || 30;
       for (let i = 0; i < count; i++) {
         const img = document.createElement("img");
-        img.src = `img/${SVGS[i % SVGS.length]}`;
+        img.src = `https://cdn.jsdelivr.net/gh/sbhkaku7/happybirthday@main/img/${SVGS[i % SVGS.length]}`;
         img.alt = "balloon";
         div.appendChild(img);
       }

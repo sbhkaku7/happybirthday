@@ -107,6 +107,7 @@ document.addEventListener("touchstart", unlockAudio);
 // Android / desktop
 document.addEventListener("click", unlockAudio);
 
+  });
 // ── Timeline Builder ─────────────────────────────────────────────
 function buildTimeline(rendered) {
   const tl = gsap.timeline();

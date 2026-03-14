@@ -28,8 +28,8 @@
 const CONFIG = {
   // ── Recipient Info ────────────────────────────────────────────
   name: "Irene",
-  photo: "./img/irene.jpg",       // Place your photo in the img/ folder
-  music: "./music/hbd.mpeg",      // Place your music in the music/ folder
+  photo: "https://cdn.jsdelivr.net/gh/sbhkaku7/happybirthday@main/img/irene.jpg",       // Place your photo in the img/ folder
+  music: "https://cdn.jsdelivr.net/gh/sbhkaku7/happybirthday@main/music/hbd.mpeg",      // Place your music in the music/ folder
 
   // ── Theme Colors ──────────────────────────────────────────────
   // A toggle button lets the viewer switch between dark & light mode.

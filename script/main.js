@@ -87,8 +87,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const isDark = currentMode === "dark";
 // SweetAlert music prompt
 
+// SweetAlert music prompt
+const isDark = currentMode === "dark";
+
 Swal.fire({
-  title: "Tap to Start Surprise🎁",
+  title: "Play music in the background?",
   icon: "question",
   showCancelButton: true,
   confirmButtonColor: CONFIG.colors.accent || "#3085d6",
@@ -97,27 +100,20 @@ Swal.fire({
   cancelButtonText: "No",
   background: isDark ? "#1e293b" : "#ffffff",
   color: isDark ? "#f1f5f9" : "#1e293b",
-  allowOutsideClick:false
-}).then((result) => {
+  allowOutsideClick: false
+}).then(function(result) {
 
   if (result.isConfirmed && audio) {
+    try {
+      audio.play();
+    } catch(e) {
+      console.log("Audio play blocked, waiting for touch");
 
-    // Force user interaction playback for iOS
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log("Music started");
-        })
-        .catch(() => {
-          // fallback for strict iOS autoplay policies
-          document.addEventListener("touchstart", () => {
-            audio.play();
-          }, { once:true });
-        });
+      // fallback for strict iOS policies
+      document.addEventListener("touchstart", function() {
+        audio.play();
+      });
     }
-
   }
 
   buildTimeline(rendered);

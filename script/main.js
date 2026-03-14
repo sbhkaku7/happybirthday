@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   createThemeToggle();
 
   // Set music source
-  const audio = document.querySelector(".song");
   if (audio && CONFIG.music) {
     audio.querySelector("source").src = CONFIG.music;
     audio.load();

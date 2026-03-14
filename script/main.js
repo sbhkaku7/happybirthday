@@ -85,24 +85,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // SweetAlert music prompt
   const isDark = currentMode === "dark";
-  Swal.fire({
-    title: "Play music in the background?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: CONFIG.colors.accent || "#3085d6",
-    cancelButtonColor: "#888",
-    confirmButtonText: "Yes!",
-    cancelButtonText: "No",
-    background: isDark ? "#1e293b" : "#ffffff",
-    color: isDark ? "#f1f5f9" : "#1e293b",
-  }).then((result) => {
-    if (result.isConfirmed && audio) {
-      audio.play().catch(() => {});
-    }
-    buildTimeline(rendered);
-  });
-});
+const audio = document.querySelector(".song");
 
+function unlockAudio() {
+
+  if (!audio) return;
+
+  audio.play().then(function(){
+    console.log("Audio started");
+  }).catch(function(e){
+    console.log("Audio blocked:", e);
+  });
+
+  // remove listeners after first interaction
+  document.removeEventListener("touchstart", unlockAudio);
+  document.removeEventListener("click", unlockAudio);
+}
+
+// iOS requires touchstart
+document.addEventListener("touchstart", unlockAudio);
+
+// Android / desktop
+document.addEventListener("click", unlockAudio);
+
+  
 // ── Timeline Builder ─────────────────────────────────────────────
 function buildTimeline(rendered) {
   const tl = gsap.timeline();

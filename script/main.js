@@ -85,10 +85,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // SweetAlert music prompt
   const isDark = currentMode === "dark";
-// SweetAlert music prompt
-
-// SweetAlert music prompt
-const isDark = currentMode === "dark";
 
 Swal.fire({
   title: "Play music in the background?",

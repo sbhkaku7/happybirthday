@@ -86,27 +86,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   // SweetAlert music prompt
   const isDark = currentMode === "dark";
 
-function unlockAudio() {
+Swal.fire({
+  title: "Tap to Start Surprise🎁",
+  icon: "question",
+  showCancelButton: true,
+  confirmButtonColor: CONFIG.colors.accent || "#3085d6",
+  cancelButtonColor: "#888",
+  confirmButtonText: "Yes!",
+  cancelButtonText: "No",
+  background: isDark ? "#1e293b" : "#ffffff",
+  color: isDark ? "#f1f5f9" : "#1e293b",
+  allowOutsideClick:false
+}).then((result) => {
 
-  if (!audio) return;
+  if (result.isConfirmed && audio) {
 
-  audio.play().then(function(){
-    console.log("Audio started");
-  }).catch(function(e){
-    console.log("Audio blocked:", e);
-  });
+    // Force user interaction playback for iOS
+    const playPromise = audio.play();
 
-  // remove listeners after first interaction
-  document.removeEventListener("touchstart", unlockAudio);
-  document.removeEventListener("click", unlockAudio);
-}
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log("Music started");
+        })
+        .catch(() => {
+          // fallback for strict iOS autoplay policies
+          document.addEventListener("touchstart", () => {
+            audio.play();
+          }, { once:true });
+        });
+    }
 
-// iOS requires touchstart
-document.addEventListener("touchstart", unlockAudio);
+  }
 
-// Android / desktop
-document.addEventListener("click", unlockAudio);
+  buildTimeline(rendered);
 
+});
   });
 // ── Timeline Builder ─────────────────────────────────────────────
 function buildTimeline(rendered) {

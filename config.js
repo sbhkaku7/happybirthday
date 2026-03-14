@@ -28,7 +28,7 @@
 const CONFIG = {
   // ── Recipient Info ────────────────────────────────────────────
   name: userName || " ",
-  photo: "https://cdn.shopify.com/s/files/1/0696/9101/5342/files/irene.jpg?v=1773476251",       // Place your photo in the img/ folder
+  photo: photo || "https://cdn.shopify.com/s/files/1/0696/9101/5342/files/irene.jpg?v=1773476251",       // Place your photo in the img/ folder
   music: "https://cdn.jsdelivr.net/gh/sbhkaku7/happybirthday@main/music/hbd.mpeg",      // Place your music in the music/ folder
 
   // ── Theme Colors ──────────────────────────────────────────────
@@ -86,8 +86,8 @@ const CONFIG = {
     },
     {
       type: "quote",
-      text: "The more you praise and celebrate your life, the more there is in life to celebrate.",
-      author: "Oprah Winfrey",
+      text: quote || "The more you praise and celebrate your life, the more there is in life to celebrate.",
+      author: from || "Oprah Winfrey",
     },
     {
       type: "stars",
